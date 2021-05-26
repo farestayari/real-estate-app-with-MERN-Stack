@@ -13,7 +13,7 @@ app.use(cors());
 //API Route
 app.use("/api/user/", require("./routes/User"));
 // app.use("/api/profile/", require("./routes/Profile"));
-// app.use("/api/property/", require("./routes/Property"));
+app.use("/api/property/", require("./routes/Property"));
 
 
 const port=process.env.PORT || 5000

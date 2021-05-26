@@ -1,62 +1,20 @@
 const mongoose = require("mongoose");
 const express = require("express");
 const router = express.Router();
-const isAuth = require('../middlewares/isAuth');
-const Property = require("../models/property");
-const validatePropertyInput = require("../controllers/propvalidation");
+const isAuth = require('../middlewares/isAuth').isAuth;
+const property = require("../models/property");
+const {addproperty,getproperty,deleteproperty,editproperty} = require("../controllers/PropertyController");
 
 //add new property
-router.post("/addproperty" ,isAuth,async (req, res) => {
-    const { propertytitle ,bedrooms,description,price,surface,images,address,city,date } = req.body;
-    try {
-      const newproperty = new Property({
-        propertytitle,
-        bedrooms,
-        description,
-        price,
-        surface,
-        images,
-        address,
-        city,
-        date ,
-      });
-      const Property = await newproperty.save();
-      res.json({ msg: "property added", Property });
-    } catch (error) {
-      console.log(error);
-    }
-  });
+router.post("/addproperty",isAuth,addproperty);
 //get properties
 
-router.get("/getproperty", async (req, res) => {
-    try {
-      const properties = await property.find();
-      res.json({ msg: "property recuperated",  });
-    } catch (error) {
-      console.log(error);
-    }
-  });
+router.get("/getproperty",isAuth,getproperty);
 //delete property
 
-router.delete("/deleteproperty/:_id",async (req, res) => {
-    const { _id } = req.params;
-    try {
-      const property = await property.findOneAndDelete({ _id:_id });
-      res.json({ msg: "property deleted", property });
-    } catch (error) {
-      console.log(error);
-    }
-  });
+router.delete("/deleteproperty/:_id",isAuth,deleteproperty)
 //edit property
 
-router.put("/editproperty/:_id",async (req, res) => {
-    const { _id } = req.params;
-    try {
-      const property = await property.findOneAndUpdate({ _id }, { $set: req.body });
-      res.json({ msg: "property edited", property });
-    } catch (error) {
-      console.log(error);
-    }
-  });
+router.put("/editproperty/:_id",isAuth,editproperty)
   
-  module.exports = router;
+module.exports = router;
