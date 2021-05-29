@@ -137,3 +137,23 @@ exports.signup = (req, res, next) => {
              res.status(500).json({ erros: err });
           });
        }
+// Get authentified user
+exports.authuser=(req, res) => {
+  res.status(200).send({ user: req.user });
+};
+
+exports.getallusers=async (req, res) => {
+  try {
+    const users = await User.find();
+    res.json({ msg: "data fetched", users });
+  } catch (error) {
+    console.log(error); 
+  }};
+
+  exports.updateuser=(req, res) => {
+    try {
+    user.findOneAndUpdate({ _id: req.params.id }, req.body);
+    res.json({ msg: "data fetched", users });
+  } catch (error) {
+    console.log(error); 
+  }};
