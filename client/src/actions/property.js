@@ -5,12 +5,12 @@ import {
   } from "./types";
 
   import PropertyService from "../services/property_service";
-  export const featuredProperty = () => (dispatch) => {
+  export const  featuredProperty = () => (dispatch) => {
       return PropertyService.getFeaturedProperty().then(
           (response) =>{
             dispatch({
                 type: FEATURED_PROPERTIES_SUCCESS,
-                payload : response
+                payload : response.data.properties
               });
         
               dispatch({

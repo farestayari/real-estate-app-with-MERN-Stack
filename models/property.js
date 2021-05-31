@@ -20,8 +20,8 @@ const propertySchema = new  Schema({
         required: true
     },
     image:{
-        type: String,
-        required: true
+        type: [],
+        required: false
     },
     price:{
         type: String,
