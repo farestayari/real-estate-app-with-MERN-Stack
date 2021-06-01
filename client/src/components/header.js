@@ -7,9 +7,6 @@ import { useDispatch, useSelector } from "react-redux";
 const Header = () => {
 	const { user } = useSelector(state => state.auth);
 	const { isLoggedIn } = useSelector(state => state.auth);
-	
-	console.log(user.message);
-
     return (
 	<div>
 		<div className="header blue-skin header-transparent change-logo">
@@ -29,7 +26,7 @@ const Header = () => {
 							
 							
 							<ul className="nav-menu nav-menu-social align-to-right">
-								{user.message.role === 'Agent' &&
+								{user && user.message.role === 'Agent' &&
 									<li>
 										<a href="/add-property" className="text-success"><img src="../img/submit.svg" width="20" alt="" className="mr-2" />Add Property</a>
 									</li>

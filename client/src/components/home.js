@@ -3,43 +3,27 @@ import axios from 'axios';
 import UserService from "../services/user.service";
 import { useDispatch, useSelector } from "react-redux";
 import { featuredProperty } from "../actions/property";
+import {login} from "../actions/auth";
 
 
 
 
 const Home = () => {
-	const [content, setContent] = useState("");
 	const [featured , setFeatured] = useState([]);
-	let array  = [];
+	let arrayProp  = [];
 
 	const dispatch = useDispatch();
+	useEffect(() => {
+		dispatch(featuredProperty())
+	}, []);
 	const { properties } = useSelector(state => state.property);
 
+	console.log(properties)
 
-	useEffect(() => {
-	  UserService.getPublicContent().then(
-		(response) => {
-		  setContent(response.data);
-		},
-		(error) => {
-		  const _content =
-			(error.response && error.response.data) ||
-			error.message ||
-			error.toString();
-  
-		  setContent(_content);
-		}
-	  );
-	}, []);
-	useEffect(() => {
-	  dispatch(featuredProperty())
-        .then(() => {
-		setFeatured(properties)
-        })
-        .catch(() => {
-        console.log('error');
-        });
-	}, [properties]);
+
+
+
+
   return (
     <div>
    	 <div className="image-bottom hero-banner" style={{background:'#2540a2 url(../img/banner.svg) no-repeat'}} data-overlay="0">
@@ -60,11 +44,11 @@ const Home = () => {
 													<ul>
                           <li>
 															<input id="cp-1" className="checkbox-custom" name="cpt" type="radio" />
-															<label for="cp-1" className="checkbox-custom-label">Location</label>
+															<label  className="checkbox-custom-label">Location</label>
 														</li>
 														<li>
 															<input id="cp-3" className="checkbox-custom" name="cpt" type="radio" />
-															<label for="cp-3" className="checkbox-custom-label">Colocation</label>
+															<label  className="checkbox-custom-label">Colocation</label>
 														</li>
 													</ul>
 												</div>
@@ -97,9 +81,9 @@ const Home = () => {
     	<section className="bg-light">
 				<div className="container">
 				
-					<div class="row justify-content-center">
-						<div class="col-lg-7 col-md-10 text-center">
-							<div class="sec-heading center">
+					<div className="row justify-content-center">
+						<div className="col-lg-7 col-md-10 text-center">
+							<div className="sec-heading center">
 								<h2>Nos offres actuelles</h2>
 								<p>At vero eos et accusamus et iusto odio dignissimos ducimus qui blanditiis praesentium voluptatum deleniti atque corrupti quos dolores</p>
 							</div>
@@ -108,68 +92,71 @@ const Home = () => {
 				
 					<div className="row list-layout">
 						<div className="col-lg-6 col-md-12">
-						{console.log(featured)}
+						{properties ? properties.map((property)=> {
+								console.log(property.surface)
+								return(
+								<div className="property-listing property-1">
 
-						{featured &&
-							<div className="property-listing property-1">
-									
-								<div className="listing-img-wrapper">
-									<a href="single-property-2.html">
-										<img src="assets/img/p-1.jpg" className="img-fluid mx-auto" alt=""/>
-									</a>
-								</div>
-								
-								<div className="listing-content">
-								
-									<div className="listing-detail-wrapper-box">
-										<div className="listing-detail-wrapper">
-											<div className="listing-short-detail">
-												<h4 className="listing-name"><a href="single-property-2.html"></a></h4>
-												<div className="fr-can-rating">
-													<i className="fas fa-star filled"></i>
-													<i className="fas fa-star filled"></i>
-													<i className="fas fa-star filled"></i>
-													<i className="fas fa-star filled"></i>
-													<i className="fas fa-star"></i>
-													<span className="reviews_text">(42 Reviews)</span>
+									<div className="listing-img-wrapper">
+										<a href="single-property-2.html">
+											<img src="assets/img/p-1.jpg" className="img-fluid mx-auto" alt=""/>
+										</a>
+									</div>
+
+									<div className="listing-content">
+
+										<div className="listing-detail-wrapper-box">
+											<div className="listing-detail-wrapper">
+												<div className="listing-short-detail">
+													<h4 className="listing-name"><a href="single-property-2.html">{property.propertytitle}</a></h4>
+													<div className="fr-can-rating">
+														<i className="fas fa-star filled"></i>
+														<i className="fas fa-star filled"></i>
+														<i className="fas fa-star filled"></i>
+														<i className="fas fa-star filled"></i>
+														<i className="fas fa-star"></i>
+														<span className="reviews_text">(42 Reviews)</span>
+													</div>
 												</div>
-												<span className="prt-types sale">For Sale</span>
-											</div>
-											<div className="list-price">
-												<h6 className="listing-card-info-price">$7,000</h6>
+												<div className="list-price">
+													<h6 className="listing-card-info-price">{property.price} DT</h6>
+												</div>
 											</div>
 										</div>
+
+										<div className="price-features-wrapper">
+											<div className="list-fx-features">
+												<div className="listing-card-info-icon">
+													<div className="inc-fleat-icon"><img src="assets/img/bed.svg" width="13" alt=""/></div>
+													S+{property.bedrooms}
+												</div>
+												<div className="listing-card-info-icon">
+													<div className="inc-fleat-icon"><img src="assets/img/move.svg" width="13" alt=""/></div>
+													{property.surface} m²
+												</div>
+											</div>
+										</div>
+
+										<div className="listing-footer-wrapper">
+											<div className="listing-locate">
+												<span className="listing-location"><i className="ti-location-pin"></i>{property.address} {property.city}</span>
+											</div>
+											<div className="listing-detail-btn">
+												<a href="single-property-2.html" className="more-btn">View</a>
+											</div>
+										</div>
+
 									</div>
-									
-									<div className="price-features-wrapper">
-										<div className="list-fx-features">
-											<div className="listing-card-info-icon">
-												<div className="inc-fleat-icon"><img src="assets/img/bed.svg" width="13" alt=""/></div>3 Beds
-											</div>
-											<div className="listing-card-info-icon">
-												<div className="inc-fleat-icon"><img src="assets/img/bathtub.svg" width="13" alt=""/></div>1 Bath
-											</div>
-											<div className="listing-card-info-icon">
-												<div className="inc-fleat-icon"><img src="assets/img/move.svg" width="13" alt=""/></div>800 sqft
-											</div>
-										</div>
-									</div>
-								
-									<div className="listing-footer-wrapper">
-										<div className="listing-locate">
-											<span className="listing-location"><i className="ti-location-pin"></i>Quice Market, Canada</span>
-										</div>
-										<div className="listing-detail-btn">
-											<a href="single-property-2.html" className="more-btn">View</a>
-										</div>
-									</div>
-									
+
 								</div>
-								
-							</div>
+								)
+
+						}) :
+							console.log('ttt')
+
 						}
 						</div>
-						
+
 					</div>
 					<div className="row">
 						<div className="col-lg-12 col-md-12 col-sm-12 text-center">
@@ -224,7 +211,6 @@ const Home = () => {
 					</div>
 					
 				</div>
-				<h3>{content}</h3>
 			</section>
 	
 	</div>
